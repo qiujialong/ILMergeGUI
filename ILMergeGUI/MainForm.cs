@@ -22,8 +22,8 @@ namespace ILMergeGUI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            
-           
+
+
         }
 
         private void btnView_Click(object sender, EventArgs e)
@@ -76,14 +76,14 @@ namespace ILMergeGUI
             {
                 this.txtOutPath.Text = dialog.SelectedPath;
             }
-            
+
         }
 
         private bool IsValidateInput()
         {
             if (string.IsNullOrEmpty(txtMainAsm.Text))
             {
-                MessageBox.Show("主文件必填！","系统提示",MessageBoxButtons.OK,MessageBoxIcon.Warning);
+                MessageBox.Show("主文件必填！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                 return false;
             }
 
@@ -116,7 +116,7 @@ namespace ILMergeGUI
             }
 
             merge.Log = this.chkLog.Checked;
-            merge.LogFile = Path.Combine(Application.StartupPath,"log.txt");
+            merge.LogFile = Path.Combine(Application.StartupPath, "log.txt");
             List<string> lstInputFiles = new List<string>();
             string primaryInputFile = this.txtMainAsm.Text;
             lstInputFiles.Add(primaryInputFile);//The first element of the array is considered to be the primary assembly.
@@ -152,17 +152,24 @@ namespace ILMergeGUI
             }
             merge.SetTargetPlatform(targetPlatform, string.Empty);////
             merge.TargetKind = ILMerge.Kind.SameAsPrimaryAssembly;
-            
-           
+
+
             Thread t = new Thread(() =>
                 {
-                    this.BeginInvoke( new Action(()=>
+                    this.BeginInvoke(new Action(() =>
                         {
                             progressBar1.Visible = true;
 
                         }));
-                    merge.Merge();
-               
+                    try
+                    {
+                        merge.Merge();
+                    }
+                    catch (Exception ex)
+                    {
+                        Loghelper.BugLog(this.GetType().ToString(), ex.Message, ex.StackTrace);
+                    }
+
                     this.BeginInvoke(new Action(() =>
                     {
                         progressBar1.Visible = false;
@@ -170,7 +177,7 @@ namespace ILMergeGUI
                     }));
                 });
             t.IsBackground = true;
-            t.Start();             
+            t.Start();
         }
     }
 }

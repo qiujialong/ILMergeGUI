@@ -51,6 +51,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Helpers\Loghelper.cs" />
     <Compile Include="ListBoxItem.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
