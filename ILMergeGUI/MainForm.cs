@@ -153,7 +153,7 @@ namespace ILMergeGUI
             merge.SetTargetPlatform(targetPlatform, string.Empty);////
             merge.TargetKind = ILMerge.Kind.SameAsPrimaryAssembly;
 
-
+            var errors = 0;
             Thread t = new Thread(() =>
                 {
                     this.BeginInvoke(new Action(() =>
@@ -167,13 +167,14 @@ namespace ILMergeGUI
                     }
                     catch (Exception ex)
                     {
+                        errors++;
                         Loghelper.BugLog(this.GetType().ToString(), ex.Message, ex.StackTrace);
                     }
 
                     this.BeginInvoke(new Action(() =>
                     {
                         progressBar1.Visible = false;
-                        MessageBox.Show("合并完成！", "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        MessageBox.Show("合并完成！" + (errors > 0 ? (" 过程中有" + errors + "处异常，请查看日志。") : ""), "系统提示", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }));
                 });
             t.IsBackground = true;
