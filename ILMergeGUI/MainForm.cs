@@ -180,5 +180,14 @@ namespace ILMergeGUI
             t.IsBackground = true;
             t.Start();
         }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            for (var i = 0; i < this.listBox.Items.Count; i++)
+            {
+                this.listBox.Items.Remove(this.listBox.Items[i]);
+                i--;
+            }
+        }
     }
 }
