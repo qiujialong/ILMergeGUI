@@ -19,7 +19,11 @@ namespace ILMergeGUI
             }
 
             string time = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss.fff");
-            string filename = path + "/" + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
+            string filename = path + "/" + "log.log";
+
+            FileInfo f = new FileInfo(filename);
+            if (f.Exists)
+                f.Delete();
 
             StreamWriter mySw = File.AppendText(filename);
 
